@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>World Editor</title>
+        <link rel="stylesheet" href="styles.css"/>
+    </head>
+    <body>
+        <h1>World Editor</h1>
+        <canvas id="myCanvas"></canvas>
+
+        <script src="js/math/graph.js"></script>
+        <script>
+            myCanvas.width = 600;
+            myCanvas.height = 600;
+
+            const ctx = myCanvas.getrContext("2d");
+            const graph = new Graph();
+            graph.draw(ctx)
+        </script>
+    </body>
+</html>
