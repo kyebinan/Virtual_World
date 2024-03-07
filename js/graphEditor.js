@@ -13,26 +13,7 @@ class GraphEditor{
 
     #addEventListeners(){
         // Event 1 
-        this.canvas.addEventListener("mousedown", (evt) => {
-            if (evt.button == 2){ //right click
-                if (this.hovered){
-                    this.#removePoint(this.hovered);
-                } else {
-                    this.selected = null
-                }
-            }
-            if (evt.button == 0){// left click
-                if (this.hovered){
-                    this.#selectPoint(this.hovered);
-                    this.selected = this.hovered;
-                    this.dragging = true;
-                    return;
-                }
-                this.graph.addPoint(this.mouse);
-                this.#selectPoint(this.mouse);
-                this.hovered = this.mouse;
-            }
-        } );
+        this.canvas.addEventListener("mousedown", this.#handleMouseDown.bind(this));
 
         // Event 2
         this.canvas.addEventListener("mousemove", (evt) => {
@@ -47,6 +28,27 @@ class GraphEditor{
         this.canvas.addEventListener("contextmenu", (evt) => evt.preventDefault());
         // Event 4 
         this.canvas.addEventListener("mouseup", () => this.dragging = false);
+    }
+
+    #handleMouseDown(evt){
+        if (evt.button == 2){ //right click
+            if (this.selected){
+                this.selected = null;
+            } else if (this.hovered){
+                this.#removePoint(this.hovered);
+            }
+        }
+        if (evt.button == 0){// left click
+            if (this.hovered){
+                this.#selectPoint(this.hovered);
+                this.selected = this.hovered;
+                this.dragging = true;
+                return;
+            }
+            this.graph.addPoint(this.mouse);
+            this.#selectPoint(this.mouse);
+            this.hovered = this.mouse;
+        }
     }
 
     #selectPoint(point){
