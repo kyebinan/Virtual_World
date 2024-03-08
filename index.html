@@ -18,6 +18,9 @@
         <script src="js/math/utils.js"></script>
         <script src="js/primitives/point.js"></script>
         <script src="js/primitives/segment.js"></script>
+        <script src="js/primitives/polygon.js"></script>
+        <script src="js/primitives/envelope.js"></script>
+
         <script>
             
 
@@ -31,14 +34,19 @@
             const graph = graphInfo 
             ? Graph.load(graphInfo)
             : new Graph();
+
+           
+
             const viewport = new Viewport(myCanvas);
             const graphEditor = new GraphEditor(viewport, graph);
+            
 
             animate();
 
             function animate(){
                 viewport.reset();
                 graphEditor.display();
+                new Envelope(graph.segments[0], 200, 20).draw(ctx);
                 requestAnimationFrame(animate);
             }
 
