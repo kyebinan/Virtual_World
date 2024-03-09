@@ -146,14 +146,14 @@ class World {
             // avoiding tree in the middle of nowhere
             if (keep){
                 for (const tree of trees){
-                    if (distance(tree, p) < this.treeSize){
+                    if (distance(tree.center, p) < this.treeSize){
                         keep = false;
                         break;
                     }
                 }
             }
             if (keep){
-                trees.push(p);
+                trees.push(new Tree(p, this.treeSize));
                 tryCount = 0;
             }
             tryCount++;
@@ -161,7 +161,7 @@ class World {
         return trees;
     }
 
-    draw(ctx){
+    draw(ctx, viewPoint){
         for (const env of this.envelopes){
             env.draw(ctx, {fill:"#BBB", stroke:"#BBB", lineWidth:15});
         }
@@ -172,7 +172,7 @@ class World {
             seg.draw(ctx, {color:"white", width:4});
         }
         for (const tree of this.trees){
-            tree.draw(ctx, {size: this.treeSize, color:"rgba(0,0,0,0.5)"});
+            tree.draw(ctx, viewPoint);
         }
         for (const bld of this.buildings){
             bld.draw(ctx);
