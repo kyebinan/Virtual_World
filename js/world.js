@@ -16,6 +16,7 @@ class World {
         this.envelopes = [];
         this.roadBorders = [];
         this.buildings = [];
+        this.trees = [];
 
         this.generate(); 
     }
@@ -30,6 +31,7 @@ class World {
 
         this.roadBorders = Polygon.union(this.envelopes.map((e) => e.poly));
         this.buildings = this.#generateBuildings();
+        this.trees = this.#generateTrees();
     }
 
     #generateBuildings(){
@@ -92,6 +94,42 @@ class World {
         return bases;
     }
 
+    #generateTrees(count = 10){
+        const points = [
+            ...this.roadBorders.map((s) => [s.p1, s.p2]).flat(),
+            ...this.buildings.map((b) => b.points).flat()
+        ];
+        const left = Math.min(...points.map((p) => p.x));
+        const right = Math.max(...points.map((p) => p.x));
+        const top = Math.min(...points.map((p) => p.y));
+        const bottom = Math.max(...points.map((p) => p.y));
+
+        const illegalPolys = [
+            ...this.buildings,
+            ...this.envelopes.map((e) => e.poly)
+        ];
+
+        const trees = [];
+        while (trees.length < count){
+            const p = new Point(
+                lerp(left, right, Math.random()),
+                lerp(bottom, top, Math.random())
+            );
+
+            let keep = true;
+            for (const poly of illegalPolys){
+                if (poly.containsPoint(p)){
+                    keep = false;
+                    break;
+                }
+            }
+            if (keep){
+                trees.push(p);
+            }
+        }
+        return trees;
+    }
+
     draw(ctx){
         for (const env of this.envelopes){
             env.draw(ctx, {fill:"#BBB", stroke:"#BBB", lineWidth:15});
@@ -101,6 +139,9 @@ class World {
         }
         for (const seg of this.roadBorders){
             seg.draw(ctx, {color:"white", width:4});
+        }
+        for (const tree of this.trees){
+            tree.draw(ctx);
         }
         for (const bld of this.buildings){
             bld.draw(ctx);
