@@ -2,6 +2,14 @@ class Segment{
     constructor(p1, p2){
         this.p1 = p1;
         this.p2 = p2;
+    }   
+
+    directionVector(){
+        return normalize(subtract(this.p2, this.p1));
+    }
+
+    length(){
+        return distance(this.p1, this.p2);
     }
 
     equals(seg){
