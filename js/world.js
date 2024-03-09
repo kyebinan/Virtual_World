@@ -4,7 +4,8 @@ class World {
             roadRoundness = 20,
             buildingWidth = 150,
             buildingMinLength =150,
-            spacing = 50
+            spacing = 50,
+            treeSize = 160
         ){
         this.graph = graph;
         this.roadWidth = roadWidth;
@@ -12,6 +13,7 @@ class World {
         this.buildingWidth = buildingWidth;
         this.buildingMinLength = buildingMinLength;
         this.spacing = spacing;
+        this.treeSize = treeSize;
 
         this.envelopes = [];
         this.roadBorders = [];
@@ -94,7 +96,7 @@ class World {
         return bases;
     }
 
-    #generateTrees(count = 10){
+    #generateTrees(){
         const points = [
             ...this.roadBorders.map((s) => [s.p1, s.p2]).flat(),
             ...this.buildings.map((b) => b.points).flat()
@@ -110,7 +112,8 @@ class World {
         ];
 
         const trees = [];
-        while (trees.length < count){
+        let tryCount = 0;
+        while (tryCount < 100){
             const p = new Point(
                 lerp(left, right, Math.random()),
                 lerp(bottom, top, Math.random())
@@ -118,14 +121,36 @@ class World {
 
             let keep = true;
             for (const poly of illegalPolys){
-                if (poly.containsPoint(p)){
+                if (poly.containsPoint(p) || poly.distanceToPoint(p) < this.treeSize / 2){
                     keep = false;
                     break;
                 }
             }
+
+            if(keep){
+                let closeToSomething = false;
+                for (const poly of illegalPolys){
+                    if (poly.distanceToPoint(p) < this.treeSize * 2){
+                        closeToSomething = true;
+                        break;
+                    }
+                }
+                keep = closeToSomething;
+            }
+
+            if (keep){
+                for (const tree of trees){
+                    if (distance(tree, p) < this.treeSize){
+                        keep = false;
+                        break;
+                    }
+                }
+            }
             if (keep){
                 trees.push(p);
+                tryCount = 0;
             }
+            tryCount++;
         }
         return trees;
     }
@@ -141,7 +166,7 @@ class World {
             seg.draw(ctx, {color:"white", width:4});
         }
         for (const tree of this.trees){
-            tree.draw(ctx);
+            tree.draw(ctx, {size: this.treeSize, color:"rgba(0,0,0,0.5)"});
         }
         for (const bld of this.buildings){
             bld.draw(ctx);
