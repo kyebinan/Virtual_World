@@ -10,6 +10,9 @@
         <div id="controls">
             <button onclick="dispose()">🗑️</button>
             <button onclick="save()">💾</button>
+            &nbsp;
+            <button id="graphBtn" onclick="setMode('graph')">🌐</button>
+            <button id="stopBtn" onclick="setMode('stop')">🛑</button>
         </div>
 
         <script src="js/world.js"></script>
@@ -44,6 +47,8 @@
             const graphEditor = new GraphEditor(viewport, graph);
             
             let oldGraphHash = graph.hash();
+            setMode("graph");
+
             animate();
 
             function animate(){
@@ -65,6 +70,30 @@
 
             function save(){
                 localStorage.setItem("graph", JSON.stringify(graph));
+            }
+
+            function setMode(mode){
+                disableEditors();
+                switch (mode){
+                    case "graph":
+                        graphBtn.style.backgroundColor = "white";
+                        graphBtn.style.filter = "";
+                        graphEditor.enable()
+                        break;
+                    case "stop":
+                        stopBtn.style.backgroundColor = "white";
+                        stopBtn.style.filter = "";
+                        break;
+                }
+            }
+
+            function disableEditors(){
+                graphBtn.style.backgroundColor = "gray";
+                graphBtn.style.filter = "grayscale(100%)";
+                graphEditor.disable()
+                stopBtn.style.backgroundColor = "gray";
+                stopBtn.style.filter = "grayscale(100%)";
+
             }
         </script>
     </body>
