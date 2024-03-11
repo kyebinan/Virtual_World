@@ -45,7 +45,7 @@ class StopEditor{
         this.mouse = this.viewport.getMouse(evt, true);
         const seg = getNearestSegment(
             this.mouse, 
-            this.world.graph.segments, 
+            this.world.laneGuides, 
             10 * this.viewport.zoom
         );
         if (seg){
@@ -54,7 +54,7 @@ class StopEditor{
                 this.intent = new Stop(
                     proj.point,
                     seg.directionVector(),
-                    this.world.roadWidth,
+                    this.world.roadWidth / 2,
                     this.world.roadWidth / 2 
                 );
             } else {
