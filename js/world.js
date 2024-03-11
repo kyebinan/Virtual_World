@@ -20,6 +20,7 @@ class World {
        this.buildings = [];
        this.trees = [];
        this.laneGuides = [];
+       this.markings = [];
  
        this.generate();
     }
@@ -186,6 +187,9 @@ class World {
        for (const env of this.envelopes) {
           env.draw(ctx, { fill: "#BBB", stroke: "#BBB", lineWidth: 15 });
        }
+       for (const marking of this.markings){
+         marking.draw(ctx);
+       }
        for (const seg of this.graph.segments) {
           seg.draw(ctx, { color: "white", width: 4, dash: [10, 10] });
        }
@@ -201,9 +205,6 @@ class World {
        );
        for (const item of items) {
           item.draw(ctx, viewPoint);
-       }
-       for (const seg of this.laneGuides){
-         seg.draw(ctx, {color: "red"});
        }
     }
  }
