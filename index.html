@@ -17,6 +17,7 @@
 
         <script src="js/world.js"></script>
         <script src="js/viewport.js"></script>
+        <script src="js/markings/stop.js"></script>
         <script src="js/editors/graphEditor.js"></script>
         <script src="js/editors/stopEditor.js"></script>
         <script src="js/items/tree.js"></script>
@@ -63,7 +64,7 @@
                 world.draw(ctx, viewPoint);
                 ctx.globalAlpha = 0.3;
                 graphEditor.display();
-                stopEdtior.display();
+                stopEditor.display();
                 requestAnimationFrame(animate);
             }
 
