@@ -1,4 +1,4 @@
-class StopEditor{
+class CrossingEditor{
     constructor(viewport, world){
         this.viewport = viewport;
         this.world = world;
@@ -47,16 +47,16 @@ class StopEditor{
         this.mouse = this.viewport.getMouse(evt, true);
         const seg = getNearestSegment(
             this.mouse, 
-            this.world.laneGuides, 
+            this.world.graph.segments, 
             10 * this.viewport.zoom
         );
         if (seg){
             const proj = seg.projectPoint(this.mouse);
             if (proj.offset >= 0 && proj.offset <= 1){
-                this.intent = new Stop(
+                this.intent = new Crossing(
                     proj.point,
                     seg.directionVector(),
-                    this.world.roadWidth / 2,
+                    this.world.roadWidth ,
                     this.world.roadWidth / 2 
                 );
             } else {
