@@ -29,6 +29,19 @@ class World {
       this.generate();
    }
 
+   static load(info){
+      const world = new World(new Graph());
+      world.graph = Graph.load(info.graph);
+      world.roadWidth = info.roadWidth;
+      world.roadRoundness = info.roadRoundness;
+      world.buildingWidth = info.buildingWidth;
+      world.buildingMinLength = info.buildingMinLength;
+      world.spacing = info.spacing;
+      world.treeSize = info.treeSize;
+      world.envelopes = info.envelopes.map((e)=> Envelope.load(e));
+      return world;
+   }
+
    generate() {
       this.envelopes.length = 0;
       for (const seg of this.graph.segments) {
