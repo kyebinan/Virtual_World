@@ -43,6 +43,7 @@ class World {
       world.buildings = info.buildings.map((e) => Building.load(e));
       world.trees = info.trees.map((t) => new Tree(t.center, info.treeSize));
       world.laneGuides = info.laneGuides.map((g) => new Segment(g.p1, g.p2));
+      world.markings = info.markings.map((m) => Marking.load(m));
       return world;
    }
 
