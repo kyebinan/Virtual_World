@@ -10,6 +10,7 @@ class Marking {
             translate(center, angle(directionVector), -height / 2)
         );
         this.poly = new Envelope(this.support, width, 0).poly;
+        this.type = "marking";
     }
 
     draw(ctx){
