@@ -39,6 +39,8 @@ class World {
       world.spacing = info.spacing;
       world.treeSize = info.treeSize;
       world.envelopes = info.envelopes.map((e)=> Envelope.load(e));
+      world.roadBorders = info.roadBorders.map((b) => new Segment(b.p1, b.p2));
+      world.buildings = info.buildings.map((e) => Building.load(e));
       return world;
    }
 
