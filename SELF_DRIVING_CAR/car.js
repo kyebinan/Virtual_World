@@ -17,7 +17,7 @@ class Car{
         if(controlType!="DUMMY"){
             this.sensor=new Sensor(this);
             this.brain=new NeuralNetwork(
-                [this.sensor.rayCount,7,4]
+                [this.sensor.rayCount,6,4]
             );
         }
         this.controls=new Controls(controlType);
@@ -121,7 +121,7 @@ class Car{
         this.y-=Math.cos(this.angle)*this.speed;
     }
 
-    draw(ctx,color){
+    draw(ctx,color,drawSensor=false){
         if(this.damaged){
             ctx.fillStyle="gray";
         }else{
@@ -134,7 +134,7 @@ class Car{
         }
         ctx.fill();
 
-        if(this.sensor){
+        if(this.sensor && drawSensor){
             this.sensor.draw(ctx);
         }
     }
